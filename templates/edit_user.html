@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit User</title>
+
+    <style>
+        body{
+            background:#f2f2f2;
+            font-family:Arial, sans-serif;
+        }
+
+        .box{
+            width:400px;
+            margin:100px auto;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0px 0px 15px rgba(0,0,0,0.2);
+            text-align:center;
+        }
+
+        h1{
+            color:#ff9800;
+        }
+
+        input{
+            width:90%;
+            padding:12px;
+            margin:10px 0;
+            border:1px solid #ccc;
+            border-radius:8px;
+        }
+
+        button{
+            background:#ff9800;
+            color:white;
+            border:none;
+            padding:12px;
+            width:100%;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;
+        }
+
+        button:hover{
+            background:#e68900;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Edit User ✏️</h1>
+
+    <form method="POST"
+      onsubmit="return confirm('Update this user details?');">
+
+        <input
+            type="text"
+            name="name"
+            value="{{ user[0] }}"
+            required
+        >
+        <input
+         type="email"
+         name="email"
+         value="{{ user[1] }}"
+         required
+         >
+<div style="position:relative;">
+    
+    <input
+        type="password"
+        id="password"
+        name="password"
+        value="{{ user[2] }}"
+        required
+        style="
+            width:100%;
+            padding:12px;
+            padding-right:45px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            box-sizing:border-box;
+        "
+    >
+
+    <span
+        onclick="togglePassword()"
+        style="
+            position:absolute;
+            right:15px;
+            top:50%;
+            transform:translateY(-50%);
+            cursor:pointer;
+        "
+    >
+        👁️
+    </span>
+
+</div>
+        <button type="submit">
+            Update User
+        </button>
+        <br><br>
+
+<a href="/users">
+    <button type="button" style="
+        background:#3498db;
+        color:white;
+        border:none;
+        padding:12px;
+        width:100%;
+        border-radius:8px;
+        cursor:pointer;">
+        ← Back to Users
+    </button>
+</a>
+
+    </form>
+        
+</div>
+<script>
+
+function togglePassword(){
+
+    let pass =
+    document.getElementById("password");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+    }
+    else{
+        pass.type = "password";
+    }
+
+}
+
+</script>
+
+</body>
+</html>
