@@ -99,14 +99,16 @@ def users_list():
     if search:
 
         cursor.execute(
-            """
-            SELECT id, name, email, password
-            FROM users
-            WHERE name LIKE ?
-            """,
-            ('%' + search + '%',)
-        )
-
+    """
+    SELECT id, name, email, password
+    FROM users
+    WHERE name LIKE ? OR email LIKE ?
+    """,
+    (
+        '%' + search + '%',
+        '%' + search + '%'
+    )
+)
     else:
 
         cursor.execute(
@@ -198,10 +200,21 @@ def edit_user(email):
 @app.route('/dashboard')
 def dashboard():
 
-    if 'user' in session:
-        return render_template('dashboard.html')
+    if 'user' not in session:
+        return redirect(url_for('home'))
 
-    return redirect(url_for('home'))
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        'dashboard.html',
+        total_users=total_users
+    )
 
 
 # EXPORT CSV
