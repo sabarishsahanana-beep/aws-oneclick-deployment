@@ -219,6 +219,7 @@ def profile():
         "profile.html",
         username=session["user"]
     )
+    
 # DASHBOARD
 @app.route("/dashboard")
 def dashboard():
