@@ -6,6 +6,19 @@ from io import StringIO
 app = Flask(__name__)
 app.secret_key = "awsproject123"
 
+def get_total_users():
+
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    return total
+
 
 # HOME
 @app.route('/')
@@ -195,27 +208,27 @@ def edit_user(email):
         user=user
     )
 
+# PROFILE PAGE
+@app.route("/profile")
+def profile():
 
-# DASHBOARD
-@app.route('/dashboard')
-def dashboard():
-
-    if 'user' not in session:
-        return redirect(url_for('home'))
-
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM users")
-    total_users = cursor.fetchone()[0]
-
-    conn.close()
+    if "user" not in session:
+        return redirect("/")
 
     return render_template(
-        'dashboard.html',
+        "profile.html",
+        username=session["user"]
+    )
+# DASHBOARD
+@app.route("/dashboard")
+def dashboard():
+
+    total_users = get_total_users()
+
+    return render_template(
+        "dashboard.html",
         total_users=total_users
     )
-
 
 # EXPORT CSV
 @app.route('/export')
