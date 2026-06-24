@@ -34,16 +34,16 @@ def login():
     password = request.form['password']
 
     conn = sqlite3.connect('/data/users.db')
-cursor = conn.cursor()
+    cursor = conn.cursor()
 
-cursor.execute(
-    "SELECT name FROM users WHERE email=? AND password=?",
-    (email, password)
-)
+    cursor.execute(
+        "SELECT name FROM users WHERE email=? AND password=?",
+        (email, password)
+    )
 
-user = cursor.fetchone()
+    user = cursor.fetchone()
 
-conn.close()
+    conn.close()
 
     if user:
         session['user'] = user[0]
@@ -53,7 +53,6 @@ conn.close()
         'login.html',
         error="Invalid Email or Password ❌"
     )
-
 
 # REGISTER PAGE
 @app.route('/register')
