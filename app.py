@@ -8,7 +8,7 @@ app.secret_key = "awsproject123"
 
 def get_total_users():
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM users")
@@ -33,7 +33,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     cursor.execute(
@@ -68,7 +68,7 @@ def register():
     email = request.form['email']
     password = request.form['password']
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     cursor.execute(
@@ -106,7 +106,7 @@ def users_list():
 
     search = request.args.get('search')
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     if search:
@@ -149,7 +149,7 @@ def users_list():
 @app.route('/delete/<email>')
 def delete_user(email):
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     cursor.execute(
@@ -167,7 +167,7 @@ def delete_user(email):
 @app.route('/edit/<email>', methods=['GET', 'POST'])
 def edit_user(email):
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     if request.method == 'POST':
@@ -234,7 +234,7 @@ def dashboard():
 @app.route('/export')
 def export_users():
 
-    conn = sqlite3.connect('/data/users.db')
+    conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
 
     cursor.execute(
