@@ -27,27 +27,20 @@ def home():
 
 
 # LOGIN
-@app.route('/login', methods=['POST'])
-def login():
+cursor.execute(
+    "SELECT name, email FROM users WHERE email=? AND password=?",
+    (email, password)
+)
 
-    email = request.form['email']
-    password = request.form['password']
+user = cursor.fetchone()
 
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
+conn.close()
 
-    cursor.execute(
-        "SELECT name FROM users WHERE email=? AND password=?",
-        (email, password)
-    )
+if user:
+    session["user"] = user[0]
+    session["email"] = user[1]
 
-    user = cursor.fetchone()
-
-    conn.close()
-
-    if user:
-        session['user'] = user[0]
-        return render_template('dashboard.html')
+    return render_template("dashboard.html")
 
     return render_template(
         'login.html',
@@ -215,21 +208,9 @@ def profile():
     if "user" not in session:
         return redirect("/")
 
-    conn = sqlite3.connect('/data/users.db')
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT name, email FROM users WHERE name=?",
-        (session["user"],)
-    )
-
-    user = cursor.fetchone()
-
-    conn.close()
-
     return render_template(
         "profile.html",
-        user=user
+        user=(session["user"], session["email"])
     )
     
 # DASHBOARD
