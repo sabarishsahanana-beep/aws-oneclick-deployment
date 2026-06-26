@@ -27,26 +27,34 @@ def home():
 
 
 # LOGIN
-cursor.execute(
-    "SELECT name, email FROM users WHERE email=? AND password=?",
-    (email, password)
-)
+@app.route('/login', methods=['POST'])
+def login():
 
-user = cursor.fetchone()
+    email = request.form['email']
+    password = request.form['password']
 
-conn.close()
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
 
-if user:
-    session["user"] = user[0]
-    session["email"] = user[1]
-
-    return render_template("dashboard.html")
-
-    return render_template(
-        'login.html',
-        error="Invalid Email or Password ❌"
+    cursor.execute(
+        "SELECT name, email FROM users WHERE email=? AND password=?",
+        (email, password)
     )
 
+    user = cursor.fetchone()
+
+    conn.close()
+
+    if user:
+        session["user"] = user[0]
+        session["email"] = user[1]
+
+        return render_template("dashboard.html")
+
+    return render_template(
+        "login.html",
+        error="Invalid Email or Password ❌"
+    )
 # REGISTER PAGE
 @app.route('/register')
 def register_page():
@@ -220,9 +228,10 @@ def dashboard():
     total_users = get_total_users()
 
     return render_template(
-        "dashboard.html",
-        total_users=total_users
-    )
+    "dashboard.html",
+    total_users=total_users,
+    username=session.get("user")
+)
 
 # EXPORT CSV
 @app.route('/export')
@@ -261,7 +270,8 @@ def export_users():
 @app.route('/logout')
 def logout():
 
-    session.pop('user', None)
+    session.pop("user", None)
+    session.pop("email", None)
 
     return redirect(url_for('home'))
 
