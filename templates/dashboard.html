@@ -1,107 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS OneClick Deployment Dashboard</title>
 
-    <style>
-        body{
-            background:#f2f2f2;
-            font-family:Arial, sans-serif;
-            text-align:center;
-        }
+<style>
 
-        .dashboard-box{
-            width:500px;
-            background:white;
-            padding:40px;
-            margin:100px auto;
-            border-radius:15px;
-            box-shadow:0px 0px 15px rgba(0,0,0,0.2);
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-        h1{
-            color:#007bff;
-        }
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-        h2{
-            color:#28a745;
-        }
+.dashboard{
+    width:900px;
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0px 15px 35px rgba(0,0,0,.25);
+}
 
-        p{
-            font-size:18px;
-            color:gray;
-        }
+h1{
+    text-align:center;
+    color:#0d6efd;
+    margin-bottom:10px;
+}
 
-        .btn{
-            color:white;
-            border:none;
-            padding:12px 20px;
-            border-radius:8px;
-            cursor:pointer;
-            font-size:16px;
-        }
+h2{
+    text-align:center;
+    color:#198754;
+}
 
-        .users-btn{
-            background:#007bff;
-            margin-right:10px;
-        }
+.subtitle{
+    text-align:center;
+    color:gray;
+    margin-top:10px;
+    margin-bottom:25px;
+}
 
-        .register-btn{
-            background:#28a745;
-        }
+.card{
+    background:#f8f9fa;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:30px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
 
-        .logout-btn{
-            background:#e74c3c;
-            margin-top:20px;
-        }
+.card h3{
+    color:#555;
+}
 
-        .users-btn:hover{
-            background:#0069d9;
-        }
+.count{
+    font-size:45px;
+    font-weight:bold;
+    color:#0d6efd;
+    margin-top:10px;
+}
 
-        .register-btn:hover{
-            background:#218838;
-        }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
 
-        .logout-btn:hover{
-            background:#c0392b;
-        }
-    </style>
+.btn{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+    font-weight:bold;
+}
+
+.btn:hover{
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.blue{
+    background:#0d6efd;
+}
+
+.green{
+    background:#198754;
+}
+
+.orange{
+    background:#fd7e14;
+}
+
+.purple{
+    background:#6f42c1;
+}
+
+.status{
+    margin-top:30px;
+    background:#eef7ff;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    line-height:35px;
+    font-size:18px;
+}
+
+.logout{
+    width:100%;
+    margin-top:25px;
+    background:#dc3545;
+    color:white;
+    border:none;
+    padding:18px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.logout:hover{
+    background:#bb2d3b;
+    transform:translateY(-4px);
+}
+
+a{
+    text-decoration:none;
+}
+
+@media(max-width:768px){
+
+.dashboard{
+    width:95%;
+}
+
+.grid{
+    grid-template-columns:1fr;
+}
+
+}
+
+</style>
+
 </head>
-
 <body>
 
-    <div class="dashboard-box">
+<div class="dashboard">
 
-        <h1>Welcome, {{ session['user'] }} 🚀</h1>
+<h1>🚀 AWS OneClick Deployment</h1>
 
-        <h2>Login Successful ✅</h2>
+<h2>Welcome, {{ session['user'] }}</h2>
 
-        <p>AWS One Click Deployment Project Dashboard</p>
-        <h3 style="color:#007bff;">
+<p class="subtitle">
+Flask • SQLite • Render Cloud
+</p>
 
-            Total Users: {{ total_users }}
-</h3>
-    <a href="/profile">
-    <button class="btn users-btn">
-        My Profile
-    </button>
+<div class="card">
+
+<h3>Total Registered Users</h3>
+
+<div class="count">
+{{ total_users }}
+</div>
+
+</div>
+
+<div class="grid">
+
+<a href="/profile">
+<button class="btn blue">
+👤 My Profile
+</button>
 </a>
 
-        <a href="/users"><button class="btn users-btn">Registered Users</button></a>
+<a href="/users">
+<button class="btn green">
+👥 Registered Users
+</button>
+</a>
 
-        <a href="/register"><button class="btn register-btn">Register User</button></a>
+<a href="/register">
+<button class="btn orange">
+➕ Register User
+</button>
+</a>
 
-        <a href="/logout"
-           onclick="return confirm('Are you sure you want to logout?')">
+<a href="/export">
+<button class="btn purple">
+📥 Export CSV
+</button>
+</a>
 
-            <button class="btn logout-btn">
-                🚪 Logout
-            </button>
+</div>
 
-        </a>
+<div class="status">
 
-    </div>
+<p>🟢 Server Status : Online</p>
+
+<p>☁ Deployment : Render Cloud</p>
+
+<p>💾 Database : SQLite</p>
+
+</div>
+
+<a href="/logout"
+onclick="return confirm('Are you sure you want to logout?')">
+
+<button class="logout">
+🚪 Logout
+</button>
+
+</a>
+
+</div>
 
 </body>
 </html>
