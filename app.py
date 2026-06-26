@@ -228,10 +228,9 @@ def dashboard():
     total_users = get_total_users()
 
     return render_template(
-    "dashboard.html",
-    total_users=total_users,
-    username=session.get("user")
-)
+        "dashboard.html",
+        total_users=total_users
+    )
 
 # EXPORT CSV
 @app.route('/export')
