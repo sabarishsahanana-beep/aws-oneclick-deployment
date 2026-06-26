@@ -215,9 +215,21 @@ def profile():
     if "user" not in session:
         return redirect("/")
 
+    conn = sqlite3.connect('/data/users.db')
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT name, email FROM users WHERE name=?",
+        (session["user"],)
+    )
+
+    user = cursor.fetchone()
+
+    conn.close()
+
     return render_template(
         "profile.html",
-        username=session["user"]
+        user=user
     )
     
 # DASHBOARD
